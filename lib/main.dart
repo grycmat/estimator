@@ -1,3 +1,4 @@
+import 'package:estimator/pages/estimation_page.dart';
 import 'package:estimator/pages/login_page.dart';
 import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/providers/user.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
             create: (_) => ProjectEstimate(),
           ),
         ],
-        child: LoginPage(),
+        child: EstimationPage(),
       ),
     );
   }

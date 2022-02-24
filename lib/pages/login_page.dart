@@ -1,24 +1,33 @@
+import 'package:estimator/pages/estimation_page.dart';
+import 'package:estimator/providers/project_estimate.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   Timer? _timer;
   final _name = TextEditingController();
   final db = FirebaseFirestore.instance.collection('project_estimation');
+  String _code = '';
 
-  _createNewProjectEstimate() async {
+  Future<bool> _createNewProjectEstimate() async {
     try {
       var newProject = await db.add({});
       var projectRef = db.doc(newProject.id);
       var newUser =
           await projectRef.collection('users').add({'name': _name.text});
       await projectRef.set({'owner': newUser.id});
+      return true;
     } catch (error) {
-      print(error);
+      return false;
     }
   }
 
@@ -41,7 +50,7 @@ class LoginPage extends StatelessWidget {
                   controller: _name,
                   decoration: const InputDecoration(
                     labelText: 'Your fabulous name!',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                   ),
                 ),
               ),
@@ -52,13 +61,28 @@ class LoginPage extends StatelessWidget {
                     if (_timer != null && _timer!.isActive) {
                       _timer!.cancel();
                     }
-                    _timer = Timer(const Duration(seconds: 1), () {
-                      print(string);
+                    _timer = Timer(const Duration(milliseconds: 400), () {
+                      setState(() {
+                        _code = string;
+                      });
                     });
                   },
                   decoration: const InputDecoration(
                     labelText: 'Provide us your estimation code',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'And join estimation',
+                      style: TextStyle(fontSize: 30),
+                    ),
                   ),
                 ),
               ),
@@ -84,7 +108,14 @@ class LoginPage extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   onPressed: () async {
-                    _createNewProjectEstimate();
+                    var response = await _createNewProjectEstimate();
+                    if (response) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => EstimationPage(),
+                        ),
+                      );
+                    }
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
