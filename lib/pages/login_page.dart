@@ -1,9 +1,10 @@
 import 'package:estimator/pages/estimation_page.dart';
 import 'package:estimator/providers/project_estimate.dart';
+import 'package:estimator/providers/user.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -15,19 +16,20 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   Timer? _timer;
   final _name = TextEditingController();
-  final db = FirebaseFirestore.instance.collection('project_estimation');
   String _code = '';
 
-  Future<bool> _createNewProjectEstimate() async {
+  Future<String?> _createNewProjectEstimate(ProjectEstimate project) async {
     try {
-      var newProject = await db.add({});
-      var projectRef = db.doc(newProject.id);
+      var newProject = await project.db.add({});
+      project.projectId = newProject.id;
+      var projectRef = project.projectRef;
       var newUser =
-          await projectRef.collection('users').add({'name': _name.text});
-      await projectRef.set({'owner': newUser.id});
-      return true;
+          await projectRef!.collection('users').add({'name': _name.text});
+      await project.projectRef!.set({'owner': newUser.id});
+      return newUser.id;
     } catch (error) {
-      return false;
+      print(error);
+      return null;
     }
   }
 
@@ -38,8 +40,12 @@ class _LoginPageState extends State<LoginPage> {
         title: const Text('Title'),
       ),
       body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/and.jpg'), fit: BoxFit.fill),
+        ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 100),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextField(
                   controller: _name,
                   decoration: const InputDecoration(
-                    labelText: 'Your fabulous name!',
+                    labelText: 'Your fabulous name <3',
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -81,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       'And join estimation',
-                      style: TextStyle(fontSize: 30),
+                      style: TextStyle(fontSize: 14),
                     ),
                   ),
                 ),
@@ -91,14 +97,12 @@ class _LoginPageState extends State<LoginPage> {
                 child: Stack(
                   alignment: AlignmentDirectional.center,
                   children: [
-                    const Divider(),
                     Container(
-                      color: Colors.white,
-                      padding: const EdgeInsets.only(left: 25, right: 25),
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.only(left: 10, right: 10),
                       child: const Text(
                         'or you can just',
-                        style: TextStyle(
-                            backgroundColor: Colors.white, fontSize: 30),
+                        style: TextStyle(fontSize: 16),
                       ),
                     )
                   ],
@@ -108,20 +112,32 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   onPressed: () async {
-                    var response = await _createNewProjectEstimate();
-                    if (response) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (_) => EstimationPage(),
+                    var project =
+                        Provider.of<ProjectEstimate>(context, listen: false);
+                    var userId = await _createNewProjectEstimate(project);
+                    if (userId == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Something went wrong'),
                         ),
                       );
+                      return;
                     }
+                    var userProvider =
+                        Provider.of<User>(context, listen: false);
+                    userProvider.create(
+                        id: userId, name: _name.text, isOwner: true);
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => EstimationPage(),
+                      ),
+                    );
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Start new estimation!',
-                      style: TextStyle(fontSize: 30),
+                      style: TextStyle(fontSize: 14),
                     ),
                   ),
                 ),
