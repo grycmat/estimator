@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estimator/models/task.dart';
 import 'package:estimator/providers/project_estimate.dart';
+import 'package:estimator/widgets/estimations_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,21 +41,38 @@ class _TasksListState extends State<TasksList> {
         }
 
         return Container(
-            child: Column(
-          children: snapshot.data!.docs.map((element) {
-            var task = Task.fromMap(element);
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: snapshot.data!.docs.map((element) {
+                    var task = Task.fromMap(element);
 
-            return Container(
-              child: Column(
-                children: [
-                  Text(task.name),
-                  Text(
-                    task.estimations.length.toString(),
-                  ),
-                ],
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.7),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              task.name,
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            EstimationsView(),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
-            );
-          }).toList(),
+            ),
+          ],
         ));
       },
     );

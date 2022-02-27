@@ -29,7 +29,7 @@ class EstimationPage extends StatelessWidget {
             height: 60,
           ),
         ),
-        body: TasksList(),
+        body: const TasksList(),
       ),
     );
   }

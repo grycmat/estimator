@@ -3,6 +3,7 @@ import 'package:estimator/pages/estimation_page.dart';
 import 'package:estimator/pages/login_page.dart';
 import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/providers/user.dart';
+import 'package:estimator/widgets/with_wallpaper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage('assets/and.jpg'), context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<User>(
@@ -35,8 +37,11 @@ class MyApp extends StatelessWidget {
         title: 'Estimator',
         theme: ThemeData(
           primarySwatch: Colors.purple,
+          scaffoldBackgroundColor: Colors.transparent,
         ),
-        home: LoginPage(),
+        home: WithWallpaper(
+          child: LoginPage(),
+        ),
       ),
     );
   }

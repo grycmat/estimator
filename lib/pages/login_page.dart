@@ -1,6 +1,7 @@
 import 'package:estimator/pages/estimation_page.dart';
 import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/providers/user.dart';
+import 'package:estimator/widgets/with_wallpaper.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,10 +41,6 @@ class _LoginPageState extends State<LoginPage> {
         title: const Text('Title'),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/and.jpg'), fit: BoxFit.fill),
-        ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -98,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: AlignmentDirectional.center,
                   children: [
                     Container(
-                      color: Colors.transparent,
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: const Text(
                         'or you can just',
@@ -129,7 +125,9 @@ class _LoginPageState extends State<LoginPage> {
                         id: userId, name: _name.text, isOwner: true);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (_) => EstimationPage(),
+                        builder: (_) => WithWallpaper(
+                          child: EstimationPage(),
+                        ),
                       ),
                     );
                   },
