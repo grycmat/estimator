@@ -1,6 +1,7 @@
 import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/widgets/new_task_sheet.dart';
 import 'package:estimator/widgets/task_item.dart';
+import 'package:estimator/widgets/tasks_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,12 +29,15 @@ class EstimationPage extends StatelessWidget {
             height: 60,
           ),
         ),
-        body: Container(),
+        body: TasksList(),
       ),
     );
   }
 
   void _openNewTaskSheet(BuildContext context) {
-    showModalBottomSheet(context: context, builder: (_) => NewTaskSheet());
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (_) => NewTaskSheet());
   }
 }

@@ -19,7 +19,7 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 1000,
+      height: 400 + MediaQuery.of(context).viewInsets.bottom,
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.all(25),
@@ -52,7 +52,6 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
                               Provider.of<User>(context, listen: false).id;
                           var project = Provider.of<ProjectEstimate>(context,
                               listen: false);
-                          print(userId);
                           var task = Task(name: _name.text);
                           var estimation = Estimate(
                             userId: userId,
@@ -69,7 +68,6 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
                             ),
                           );
                         }
-                        // project.addTask(task);
                         Navigator.of(context).pop();
                       },
                       child: const Text('GO GO GO'),

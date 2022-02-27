@@ -31,4 +31,7 @@ class ProjectEstimate extends ChangeNotifier {
 
   CollectionReference<Map<String, dynamic>>? get tasksRef =>
       projectRef?.collection('tasks');
+
+  Stream<QuerySnapshot<Map<String, dynamic>>>? get tasksStream =>
+      tasksRef?.snapshots();
 }

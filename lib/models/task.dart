@@ -1,6 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Task {
   Task({required this.name});
-
+  Task.fromMap(QueryDocumentSnapshot document) {
+    var taskMap = document.data() as Map<String, dynamic>;
+    List<dynamic> estimationsList = taskMap['estimations'];
+    name = taskMap['name'];
+    for (var element in estimationsList) {
+      addEstimation(Estimate(
+        userId: element['userId'],
+        value: element['value'],
+      ));
+    }
+  }
   String name = '';
   List<Estimate> estimations = [];
 
