@@ -34,7 +34,7 @@ class TaskView extends StatelessWidget {
                   color: Colors.transparent,
                   child: Text(
                     task.name,
-                    style: TextStyle(fontSize: 26),
+                    style: const TextStyle(fontSize: 26),
                   ),
                 ),
               ),

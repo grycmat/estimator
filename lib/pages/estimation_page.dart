@@ -4,10 +4,11 @@ import 'package:estimator/widgets/tasks_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:unicons/unicons.dart';
 
 class EstimationPage extends StatelessWidget {
-  EstimationPage({Key? key}) : super(key: key);
+  const EstimationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +21,9 @@ class EstimationPage extends StatelessWidget {
               padding: const EdgeInsets.only(right: 12),
               child: IconButton(
                 onPressed: () {
-                  Clipboard.setData(
-                    ClipboardData(text: project.projectId),
-                  );
+                  Share.share(project.projectId!);
                 },
-                icon: Icon(UniconsLine.share_alt),
+                icon: const Icon(UniconsLine.share_alt),
               ),
             ),
           ],
@@ -35,7 +34,7 @@ class EstimationPage extends StatelessWidget {
           onPressed: () {
             _openNewTaskSheet(context);
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),

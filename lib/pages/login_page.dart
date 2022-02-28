@@ -4,11 +4,10 @@ import 'package:estimator/providers/user.dart';
 import 'package:estimator/widgets/with_wallpaper.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -82,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                         .projectId = _code.text;
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (_) => WithWallpaper(
+                        builder: (_) => const WithWallpaper(
                           child: EstimationPage(),
                         ),
                       ),
@@ -133,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                         id: userId, name: _name.text, isOwner: true);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (_) => WithWallpaper(
+                        builder: (_) => const WithWallpaper(
                           child: EstimationPage(),
                         ),
                       ),

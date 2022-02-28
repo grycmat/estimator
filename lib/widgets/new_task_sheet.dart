@@ -2,12 +2,13 @@ import 'package:estimator/models/estimate.dart';
 import 'package:estimator/models/task.dart';
 import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/providers/user.dart';
+import 'package:estimator/widgets/save_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 class NewTaskSheet extends StatefulWidget {
-  NewTaskSheet({Key? key}) : super(key: key);
+  const NewTaskSheet({Key? key}) : super(key: key);
 
   @override
   State<NewTaskSheet> createState() => _NewTaskSheetState();
@@ -15,7 +16,6 @@ class NewTaskSheet extends StatefulWidget {
 
 class _NewTaskSheetState extends State<NewTaskSheet> {
   final _name = TextEditingController();
-
   final _estimation = TextEditingController();
 
   @override
@@ -48,7 +48,7 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
+                    child: SaveButton(
                       onPressed: () {
                         try {
                           var userId =
@@ -72,12 +72,6 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
                         }
                         Navigator.of(context).pop();
                       },
-                      child: Container(
-                          height: 57,
-                          child: const Icon(
-                            UniconsSolid.check,
-                            size: 36,
-                          )),
                     ),
                   ),
                 ],
