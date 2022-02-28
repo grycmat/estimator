@@ -21,7 +21,8 @@ class EstimationPage extends StatelessWidget {
               padding: const EdgeInsets.only(right: 12),
               child: IconButton(
                 onPressed: () {
-                  Share.share(project.projectId!);
+                  Share.share(
+                      'estimator123://estimator123.com?${project.projectId!}');
                 },
                 icon: const Icon(UniconsLine.share_alt),
               ),
