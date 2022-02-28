@@ -6,7 +6,9 @@ import 'package:estimator/providers/user.dart';
 import 'package:estimator/widgets/with_wallpaper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:uni_links/uni_links.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -20,8 +22,18 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  Future<void> _initUniLinks() async {
+    try {
+      Uri? initialLink = await getInitialUri();
+      print(initialLink);
+    } on PlatformException {
+      print('platfrom exception unilink');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _initUniLinks();
     precacheImage(const AssetImage('assets/and.jpg'), context);
     return MultiProvider(
       providers: [
@@ -39,7 +51,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
           scaffoldBackgroundColor: Colors.transparent,
         ),
-        home: WithWallpaper(
+        home: const WithWallpaper(
           child: LoginPage(),
         ),
       ),
