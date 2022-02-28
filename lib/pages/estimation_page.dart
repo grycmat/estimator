@@ -1,6 +1,5 @@
 import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/widgets/new_task_sheet.dart';
-import 'package:estimator/widgets/task_item.dart';
 import 'package:estimator/widgets/tasks_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
