@@ -46,33 +46,39 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
                           labelText: 'Estimation'),
                     ),
                   ),
-                  ElevatedButton(
-                    style: ButtonStyle(),
-                    onPressed: () {
-                      try {
-                        var userId =
-                            Provider.of<User>(context, listen: false).id;
-                        var project = Provider.of<ProjectEstimate>(context,
-                            listen: false);
-                        var task = Task(name: _name.text);
-                        var estimation = Estimate(
-                          userId: userId,
-                          value: int.parse(_estimation.text),
-                        );
-                        task.addEstimation(estimation);
-                        var taskMap = task.toMap();
-                        project.tasksRef?.add(taskMap);
-                      } catch (error) {
-                        print(error);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Something went wrong'),
-                          ),
-                        );
-                      }
-                      Navigator.of(context).pop();
-                    },
-                    child: const Icon(UniconsSolid.angle_double_right),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        try {
+                          var userId =
+                              Provider.of<User>(context, listen: false).id;
+                          var project = Provider.of<ProjectEstimate>(context,
+                              listen: false);
+                          var task = Task(name: _name.text);
+                          var estimation = Estimate(
+                            userId: userId,
+                            value: int.parse(_estimation.text),
+                          );
+                          task.addEstimation(estimation);
+                          project.addTask(task);
+                        } catch (error) {
+                          print(error);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Something went wrong'),
+                            ),
+                          );
+                        }
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                          height: 57,
+                          child: const Icon(
+                            UniconsSolid.check,
+                            size: 36,
+                          )),
+                    ),
                   ),
                 ],
               ),

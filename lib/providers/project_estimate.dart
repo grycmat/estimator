@@ -13,7 +13,8 @@ class ProjectEstimate extends ChangeNotifier {
 
   addTask(Task task) {
     tasks.add(task);
-    notifyListeners();
+
+    tasksRef?.add(task.toMap());
   }
 
   int getItemCount() {
@@ -35,4 +36,13 @@ class ProjectEstimate extends ChangeNotifier {
 
   Stream<QuerySnapshot<Map<String, dynamic>>>? get tasksStream =>
       tasksRef?.snapshots();
+
+  DocumentReference<Map<String, dynamic>>? getTaskRef(String id) =>
+      tasksRef?.doc(id);
+  DocumentReference<Map<String, dynamic>>? getTaskEstimationsRef(String id) =>
+      tasksRef?.doc('$id.estimations');
+
+  void updateEstimations(Task task) {
+    tasksRef?.doc(task.id).update(task.toMap());
+  }
 }

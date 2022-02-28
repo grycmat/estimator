@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   Timer? _timer;
   final _name = TextEditingController();
-  String _code = '';
+  final _code = TextEditingController();
 
   Future<String?> _createNewProjectEstimate(ProjectEstimate project) async {
     try {
@@ -32,6 +32,13 @@ class _LoginPageState extends State<LoginPage> {
       print(error);
       return null;
     }
+  }
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _code.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,16 +67,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  onChanged: (string) {
-                    if (_timer != null && _timer!.isActive) {
-                      _timer!.cancel();
-                    }
-                    _timer = Timer(const Duration(milliseconds: 400), () {
-                      setState(() {
-                        _code = string;
-                      });
-                    });
-                  },
+                  controller: _code,
                   decoration: const InputDecoration(
                     labelText: 'Provide us your estimation code',
                     border: OutlineInputBorder(),
@@ -79,7 +77,17 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<ProjectEstimate>(context, listen: false)
+                        .projectId = _code.text;
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (_) => WithWallpaper(
+                          child: EstimationPage(),
+                        ),
+                      ),
+                    );
+                  },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(

@@ -2,8 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estimator/models/estimate.dart';
 
 class Task {
+  String name = '';
+  String id = '';
+  List<Estimate> estimations = [];
+
   Task({required this.name});
+
   Task.fromMap(QueryDocumentSnapshot document) {
+    id = document.id;
     var taskMap = document.data() as Map<String, dynamic>;
     List<dynamic> estimationsList = taskMap['estimations'];
     name = taskMap['name'];
@@ -14,8 +20,6 @@ class Task {
       ));
     }
   }
-  String name = '';
-  List<Estimate> estimations = [];
 
   addEstimation(Estimate estimation) {
     estimations.add(estimation);

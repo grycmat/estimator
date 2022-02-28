@@ -28,9 +28,15 @@ class TaskView extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Text(
-                task.name,
-                style: TextStyle(fontSize: 26),
+              Hero(
+                tag: task.id,
+                child: Material(
+                  color: Colors.transparent,
+                  child: Text(
+                    task.name,
+                    style: TextStyle(fontSize: 26),
+                  ),
+                ),
               ),
               EstimationsSlider(
                 data: data,
