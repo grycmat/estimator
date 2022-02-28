@@ -8,7 +8,8 @@ class ProjectEstimate extends ChangeNotifier {
   List<Task> tasks = [];
   String owner = '';
 
-  set projectId(String id) => _projectId = id;
+  set projectId(String? id) => _projectId = id;
+  String? get projectId => _projectId;
 
   addTask(Task task) {
     tasks.add(task);

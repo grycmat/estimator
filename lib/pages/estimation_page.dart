@@ -3,7 +3,9 @@ import 'package:estimator/widgets/new_task_sheet.dart';
 import 'package:estimator/widgets/task_item.dart';
 import 'package:estimator/widgets/tasks_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:unicons/unicons.dart';
 
 class EstimationPage extends StatelessWidget {
   EstimationPage({Key? key}) : super(key: key);
@@ -14,6 +16,20 @@ class EstimationPage extends StatelessWidget {
       builder: (_, project, __) => Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         appBar: AppBar(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: IconButton(
+                onPressed: () {
+                  Clipboard.setData(
+                    ClipboardData(text: project.projectId),
+                  );
+                },
+                icon: Icon(UniconsLine.share_alt),
+              ),
+            ),
+          ],
+          centerTitle: true,
           title: const Text('Estimating wild'),
         ),
         floatingActionButton: FloatingActionButton(

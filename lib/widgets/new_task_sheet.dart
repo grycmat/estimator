@@ -1,3 +1,4 @@
+import 'package:estimator/models/estimate.dart';
 import 'package:estimator/models/task.dart';
 import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/providers/user.dart';
