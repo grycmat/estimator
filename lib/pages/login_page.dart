@@ -17,14 +17,15 @@ class _LoginPageState extends State<LoginPage> {
   Timer? _timer;
   final _name = TextEditingController();
   final _code = TextEditingController();
+  String? _nameError;
+  String? _codeError;
 
   Future<String?> _createNewProjectEstimate(ProjectEstimate project) async {
     try {
-      var newProject = await project.db.add({});
+      var newProject = await project.createNewProject();
       project.projectId = newProject.id;
-      var projectRef = project.projectRef;
-      var newUser =
-          await projectRef!.collection('users').add({'name': _name.text});
+      var usersRef = project.usersRef;
+      var newUser = await usersRef!.add({'name': _name.text});
       await project.projectRef!.set({'owner': newUser.id});
       return newUser.id;
     } catch (error) {
@@ -57,9 +58,10 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: _name,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Your fabulous name <3',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    errorText: _nameError,
                   ),
                 ),
               ),
@@ -67,9 +69,10 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
                   controller: _code,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Provide us your estimation code',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    errorText: _codeError,
                   ),
                 ),
               ),
@@ -77,6 +80,16 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   onPressed: () {
+                    if (_name.text == '' || _code.text == '') {
+                      setState(() {
+                        _nameError =
+                            _name.text == '' ? 'Name cannot be empty' : '';
+                        _codeError = _code.text == ''
+                            ? 'You need to use code to join'
+                            : '';
+                      });
+                      return;
+                    }
                     Provider.of<ProjectEstimate>(context, listen: false)
                         .projectId = _code.text;
                     Navigator.of(context).pushReplacement(
@@ -115,6 +128,13 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   onPressed: () async {
+                    if (_name.text == '') {
+                      setState(() {
+                        _nameError = 'Name cannot be empty';
+                      });
+
+                      return;
+                    }
                     var project =
                         Provider.of<ProjectEstimate>(context, listen: false);
                     var userId = await _createNewProjectEstimate(project);

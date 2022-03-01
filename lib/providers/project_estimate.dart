@@ -25,11 +25,18 @@ class ProjectEstimate extends ChangeNotifier {
     return tasks[index];
   }
 
+  Future<DocumentReference<Map<String, dynamic>>> createNewProject() async {
+    return await db.add({});
+  }
+
   CollectionReference<Map<String, dynamic>> get db =>
       FirebaseFirestore.instance.collection('project_estimation');
 
   DocumentReference<Map<String, dynamic>>? get projectRef =>
       _projectId != null ? db.doc(_projectId) : null;
+
+  CollectionReference<Map<String, dynamic>>? get usersRef =>
+      projectRef?.collection('users');
 
   CollectionReference<Map<String, dynamic>>? get tasksRef =>
       projectRef?.collection('tasks');
