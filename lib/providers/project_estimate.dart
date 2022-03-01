@@ -42,7 +42,7 @@ class ProjectEstimate extends ChangeNotifier {
   DocumentReference<Map<String, dynamic>>? getTaskEstimationsRef(String id) =>
       tasksRef?.doc('$id.estimations');
 
-  void updateEstimations(Task task) {
+  void update(Task task) {
     tasksRef?.doc(task.id).update(task.toMap());
   }
 }

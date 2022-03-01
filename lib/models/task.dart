@@ -25,6 +25,10 @@ class Task {
     estimations.add(estimation);
   }
 
+  Estimate getUserEstimation(String userId) {
+    return estimations.firstWhere((element) => element.userId == userId);
+  }
+
   EstimateData calculateEstimations() {
     double? min;
     var average = 0.0;
@@ -49,5 +53,9 @@ class Task {
 
   List<Map<String, dynamic>> _estimationsToMap() {
     return estimations.map((item) => item.toMap()).toList();
+  }
+
+  void updateEstimation({required String userId, required int value}) {
+    getUserEstimation(userId).value = value;
   }
 }

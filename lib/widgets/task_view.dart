@@ -1,6 +1,7 @@
 import 'package:estimator/models/estimate.dart';
 import 'package:estimator/models/task.dart';
 import 'package:estimator/widgets/estimations_slider.dart';
+import 'package:estimator/widgets/save_button.dart';
 import 'package:estimator/widgets/task_details.dart';
 import 'package:flutter/material.dart';
 
@@ -13,9 +14,10 @@ class TaskView extends StatelessWidget {
     EstimateData data = task.calculateEstimations();
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (ctx) => TaskDetails(task: task),
+        showDialog(
+          context: context,
+          builder: (builder) => AlertDialog(
+            content: TaskDetails(task: task),
           ),
         );
       },
