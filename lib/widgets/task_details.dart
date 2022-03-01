@@ -11,7 +11,7 @@ class TaskDetails extends StatelessWidget {
   final _estimation = TextEditingController();
 
   void _addEstimation(BuildContext context) {
-    var user = Provider.of<User>(context);
+    var user = Provider.of<User>(context, listen: false);
     var project = Provider.of<ProjectEstimate>(context, listen: false);
     var estimation =
         Estimate(userId: user.id, value: int.parse(_estimation.text));

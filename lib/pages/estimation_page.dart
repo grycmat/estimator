@@ -2,6 +2,7 @@ import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/widgets/new_task_sheet.dart';
 import 'package:estimator/widgets/tasks_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
@@ -18,7 +19,10 @@ class EstimationPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 12),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  print(project.projectId);
+                  Clipboard.setData(ClipboardData(text: project.projectId));
+                },
                 icon: const Icon(UniconsLine.share_alt),
               ),
             ),
