@@ -4,6 +4,7 @@ import 'package:estimator/widgets/tasks_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:unicons/unicons.dart';
 
 class EstimationPage extends StatelessWidget {
@@ -21,7 +22,7 @@ class EstimationPage extends StatelessWidget {
               child: IconButton(
                 onPressed: () {
                   print(project.projectId);
-                  Clipboard.setData(ClipboardData(text: project.projectId));
+                  Share.share(project.projectId!);
                 },
                 icon: const Icon(UniconsLine.share_alt),
               ),
