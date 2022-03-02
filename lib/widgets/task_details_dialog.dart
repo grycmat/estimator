@@ -25,6 +25,10 @@ class TaskDetailsDialog extends StatelessWidget {
     _approvedEstimation.text = value.toString();
   }
 
+  void _approveEstimation() {
+    task.approvedEstimation = _approvedEstimation.text;
+  }
+
   @override
   Widget build(BuildContext context) {
     var _user = Provider.of<User>(context, listen: false);
@@ -119,7 +123,14 @@ class TaskDetailsDialog extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      task.approvedEstimation = _approvedEstimation.text;
+
+                      _project.update(task);
+                      print(task.approvedEstimation);
+
+                      Navigator.of(context).pop();
+                    },
                     child: const Text(
                       'Approve',
                       style: TextStyle(fontSize: 18),

@@ -73,7 +73,9 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
                                 Provider.of<User>(context, listen: false).id;
                             var project = Provider.of<ProjectEstimate>(context,
                                 listen: false);
-                            var task = Task(name: _name.text);
+                            var task = Task(
+                                name: _name.text,
+                                projectId: project.projectId!);
                             var estimation = Estimate(
                               userId: userId,
                               value: int.parse(_estimation.text),

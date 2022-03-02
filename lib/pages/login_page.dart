@@ -33,6 +33,18 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Future<String?>? _joinEstimation(ProjectEstimate project) async {
+    try {
+      project.projectId = _code.text;
+      var usersRef = project.usersRef;
+      var newUser = await usersRef!.add({'name': _name.text});
+      return newUser.id;
+    } catch (error) {
+      print(error);
+      return null;
+    }
+  }
+
   @override
   void dispose() {
     _name.dispose();
@@ -78,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_name.text == '' || _code.text == '') {
                       setState(() {
                         _nameError =
@@ -89,8 +101,14 @@ class _LoginPageState extends State<LoginPage> {
                       });
                       return;
                     }
-                    Provider.of<ProjectEstimate>(context, listen: false)
-                        .projectId = _code.text;
+                    var project =
+                        Provider.of<ProjectEstimate>(context, listen: false);
+                    var userId = await _joinEstimation(project);
+                    Provider.of<User>(context, listen: false);
+                    var userProvider =
+                        Provider.of<User>(context, listen: false);
+                    userProvider.create(id: userId!, name: _name.text);
+
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (_) => const WithWallpaper(

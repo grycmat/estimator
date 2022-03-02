@@ -2,11 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estimator/models/estimate.dart';
 
 class Task {
-  String name = '';
+  String _name = '';
+  String projectId = '';
   String id = '';
+  String approvedEstimation = '';
   List<Estimate> estimations = [];
 
-  Task({required this.name});
+  Task({required String name, required this.projectId}) {
+    _name = name;
+  }
+
+  set name(val) => _name = val;
+  get name => _name;
 
   Task.fromMap(QueryDocumentSnapshot document) {
     id = document.id;
@@ -21,12 +28,18 @@ class Task {
     }
   }
 
-  addEstimation(Estimate estimation) {
+  Estimate addEstimation(Estimate estimation) {
     estimations.add(estimation);
+    return estimation;
   }
 
   Estimate getUserEstimation(String userId) {
-    return estimations.firstWhere((element) => element.userId == userId);
+    return estimations.firstWhere((element) => element.userId == userId,
+        orElse: (() {
+      var estimate = Estimate(userId: userId, value: 0);
+      addEstimation(estimate);
+      return estimate;
+    }));
   }
 
   EstimateData calculateEstimations() {
@@ -56,6 +69,11 @@ class Task {
   }
 
   void updateEstimation({required String userId, required int value}) {
+    print({userId, value});
     getUserEstimation(userId).value = value;
+  }
+
+  upsert() {
+    FirebaseFirestore.instance.collection('project_estimation');
   }
 }

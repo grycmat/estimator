@@ -13,6 +13,7 @@ class EstimationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProjectEstimate _project = Provider.of<ProjectEstimate>(context);
     User _user = Provider.of<User>(context);
     return Consumer<ProjectEstimate>(
       builder: (_, project, __) => Scaffold(

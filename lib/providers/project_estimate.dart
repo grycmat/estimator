@@ -50,6 +50,7 @@ class ProjectEstimate extends ChangeNotifier {
       tasksRef?.doc('$id.estimations');
 
   void update(Task task) {
+    print(task.toMap());
     tasksRef?.doc(task.id).update(task.toMap());
   }
 }
