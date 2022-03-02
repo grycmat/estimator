@@ -11,12 +11,15 @@ class EstimationsSlider extends StatelessWidget {
       child: SliderTheme(
         data: const SliderThemeData(
           showValueIndicator: ShowValueIndicator.always,
+          disabledThumbColor: Colors.grey,
+          disabledActiveTickMarkColor: Colors.grey,
+          disabledActiveTrackColor: Colors.grey,
         ),
         child: Slider(
           min: data.min,
           max: data.max,
           value: data.average,
-          onChanged: (value) {},
+          onChanged: null,
         ),
       ),
     );

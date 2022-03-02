@@ -1,4 +1,5 @@
 import 'package:estimator/providers/project_estimate.dart';
+import 'package:estimator/providers/user.dart';
 import 'package:estimator/widgets/new_task_sheet.dart';
 import 'package:estimator/widgets/tasks_list.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,10 @@ class EstimationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User _user = Provider.of<User>(context);
     return Consumer<ProjectEstimate>(
       builder: (_, project, __) => Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         appBar: AppBar(
           actions: [
             Padding(
@@ -29,7 +31,7 @@ class EstimationPage extends StatelessWidget {
             ),
           ],
           centerTitle: true,
-          title: const Text('Estimating wild'),
+          title: Text(_user.name),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -37,14 +39,7 @@ class EstimationPage extends StatelessWidget {
           },
           child: const Icon(Icons.add),
         ),
-        bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 5,
-          child: Container(
-            height: 60,
-          ),
-        ),
-        body: const TasksList(),
+        body: const SingleChildScrollView(child: TasksList()),
       ),
     );
   }

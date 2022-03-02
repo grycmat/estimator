@@ -29,7 +29,7 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 310 + MediaQuery.of(context).viewInsets.bottom,
+      height: 300 + MediaQuery.of(context).viewInsets.bottom,
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.all(25),
@@ -44,7 +44,7 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
                 decoration: const InputDecoration(
                     labelText: 'Task',
                     floatingLabelBehavior: FloatingLabelBehavior.never),
-                style: const TextStyle(fontSize: 50),
+                style: const TextStyle(fontSize: 40),
               ),
               Padding(
                 padding: const EdgeInsets.all(20),

@@ -14,7 +14,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  Timer? _timer;
   final _name = TextEditingController();
   final _code = TextEditingController();
   String? _nameError;

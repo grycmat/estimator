@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:unicons/unicons.dart';
 
 class SaveButton extends StatelessWidget {
-  const SaveButton({Key? key, required this.onPressed}) : super(key: key);
+  SaveButton({Key? key, required this.onPressed, this.size = 36})
+      : super(key: key);
 
   final Function onPressed;
+  double size;
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +16,9 @@ class SaveButton extends StatelessWidget {
       },
       child: Container(
           height: 57,
-          child: const Icon(
+          child: Icon(
             UniconsSolid.check,
-            size: 36,
+            size: size,
           )),
     );
   }
