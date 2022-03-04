@@ -3,8 +3,8 @@ import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/providers/user.dart';
 import 'package:estimator/widgets/with_wallpaper.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'dart:async';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -16,6 +16,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _name = TextEditingController();
   final _code = TextEditingController();
+  final _project = GetIt.I<ProjectEstimate>();
+  final _user = GetIt.I<User>();
   String? _nameError;
   String? _codeError;
 
@@ -101,17 +103,12 @@ class _LoginPageState extends State<LoginPage> {
                       });
                       return;
                     }
-                    var project =
-                        Provider.of<ProjectEstimate>(context, listen: false);
-                    var userId = await _joinEstimation(project);
-                    Provider.of<User>(context, listen: false);
-                    var userProvider =
-                        Provider.of<User>(context, listen: false);
-                    userProvider.create(id: userId!, name: _name.text);
+                    var userId = await _joinEstimation(_project);
+                    _user.create(id: userId!, name: _name.text);
 
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (_) => const WithWallpaper(
+                        builder: (_) => WithWallpaper(
                           child: EstimationPage(),
                         ),
                       ),
@@ -152,9 +149,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       return;
                     }
-                    var project =
-                        Provider.of<ProjectEstimate>(context, listen: false);
-                    var userId = await _createNewProjectEstimate(project);
+                    var userId = await _createNewProjectEstimate(_project);
                     if (userId == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -163,13 +158,10 @@ class _LoginPageState extends State<LoginPage> {
                       );
                       return;
                     }
-                    var userProvider =
-                        Provider.of<User>(context, listen: false);
-                    userProvider.create(
-                        id: userId, name: _name.text, isOwner: true);
+                    _user.create(id: userId, name: _name.text, isOwner: true);
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (_) => const WithWallpaper(
+                        builder: (_) => WithWallpaper(
                           child: EstimationPage(),
                         ),
                       ),

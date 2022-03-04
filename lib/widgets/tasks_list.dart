@@ -3,7 +3,7 @@ import 'package:estimator/models/task.dart';
 import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/widgets/task_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 
 class TasksList extends StatefulWidget {
   const TasksList({Key? key}) : super(key: key);
@@ -13,9 +13,9 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
+  final _stream = GetIt.I<ProjectEstimate>().tasksStream;
   @override
   Widget build(BuildContext context) {
-    var _stream = Provider.of<ProjectEstimate>(context).tasksStream;
     return StreamBuilder<QuerySnapshot>(
       stream: _stream,
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {

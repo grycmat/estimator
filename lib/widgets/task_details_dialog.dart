@@ -4,36 +4,22 @@ import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/providers/user.dart';
 import 'package:estimator/widgets/save_button.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 
 class TaskDetailsDialog extends StatelessWidget {
   TaskDetailsDialog({Key? key, required this.task}) : super(key: key);
   final Task task;
   final _myEstimation = TextEditingController();
   final _approvedEstimation = TextEditingController();
-
-  void _addEstimation(BuildContext context) {
-    var user = Provider.of<User>(context, listen: false);
-    var project = Provider.of<ProjectEstimate>(context, listen: false);
-    var estimation =
-        Estimate(userId: user.id, value: int.parse(_myEstimation.text));
-    task.addEstimation(estimation);
-    project.update(task);
-  }
+  final _user = GetIt.I<User>();
+  final _project = GetIt.I<ProjectEstimate>();
 
   void _presetApprovedValue(double value) {
     _approvedEstimation.text = value.toString();
   }
 
-  void _approveEstimation() {
-    task.approvedEstimation = _approvedEstimation.text;
-  }
-
   @override
   Widget build(BuildContext context) {
-    var _user = Provider.of<User>(context, listen: false);
-    _myEstimation.text = task.getUserEstimation(_user.id).value.toString();
-    var _project = Provider.of<ProjectEstimate>(context, listen: false);
     EstimateData _estimationData = task.calculateEstimations();
     _approvedEstimation.text = _estimationData.average.toString();
 

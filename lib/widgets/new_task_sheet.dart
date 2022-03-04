@@ -4,7 +4,7 @@ import 'package:estimator/providers/project_estimate.dart';
 import 'package:estimator/providers/user.dart';
 import 'package:estimator/widgets/save_button.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:unicons/unicons.dart';
 
 class NewTaskSheet extends StatefulWidget {
@@ -18,6 +18,8 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
   final _name = TextEditingController();
   final _estimation = TextEditingController();
   final _form = GlobalKey<FormState>();
+  final _user = GetIt.I<User>();
+  final _project = GetIt.I<ProjectEstimate>();
 
   @override
   void dispose() {
@@ -69,19 +71,15 @@ class _NewTaskSheetState extends State<NewTaskSheet> {
                             return;
                           }
                           try {
-                            var userId =
-                                Provider.of<User>(context, listen: false).id;
-                            var project = Provider.of<ProjectEstimate>(context,
-                                listen: false);
                             var task = Task(
                                 name: _name.text,
-                                projectId: project.projectId!);
+                                projectId: _project.projectId!);
                             var estimation = Estimate(
-                              userId: userId,
+                              userId: _user.id,
                               value: int.parse(_estimation.text),
                             );
                             task.addEstimation(estimation);
-                            project.addTask(task);
+                            _project.addTask(task);
                           } catch (error) {
                             print(error);
                             ScaffoldMessenger.of(context).showSnackBar(
